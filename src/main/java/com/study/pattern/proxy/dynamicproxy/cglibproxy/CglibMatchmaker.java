@@ -1,39 +1,44 @@
 package com.study.pattern.proxy.dynamicproxy.cglibproxy;
 
-import com.study.pattern.proxy.dynamicproxy.jdkproxy.IPerson;
 
-import java.lang.reflect.InvocationHandler;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * @Author wenjun
  * @Date 2020/9/21
  * @Description
  */
-public class CglibMatchmaker implements InvocationHandler {
-    private IPerson target;
+public class CglibMatchmaker implements MethodInterceptor {
 
-    public IPerson getInstance(IPerson target){
-        this.target = target;
-        Class<?> clazz = target.getClass();
-        return (IPerson) Proxy.newProxyInstance(clazz.getClassLoader(),clazz.getInterfaces(),this);
+    public Object getInstance(Class<?> clazz){
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(clazz);
+        enhancer.setCallback(this);
+        return enhancer.create();
+
+    }
+
+
+
+
+    private void after() {
+        System.out.println("开始交往");
+    }
+
+    private void before() {
+        System.out.println("开始物色");
     }
 
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         before();
-        Object invoke = method.invoke(this.target, args);
+        Object invoke = methodProxy.invokeSuper(o, objects);
         after();
         return invoke;
-    }
-
-    private void after() {
-        System.out.println("开始物色");
-    }
-
-    private void before() {
-        System.out.println("开始交往");
     }
 }

@@ -9,6 +9,6 @@ package com.study.pattern.proxy.staticproxy;
 public class Wangwu implements IPerson {
     @Override
     public void findLove() {
-
+        System.out.println("合适就好");
     }
 }
