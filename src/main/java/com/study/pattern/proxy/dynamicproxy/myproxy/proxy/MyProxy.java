@@ -62,7 +62,7 @@ public class MyProxy {
             StringBuilder paramClasses = new StringBuilder();
 
             for(int i = 0; i < params.length; i++){
-                
+
             }
 
             sb.append("public " + m.getReturnType().getName() + " " + m.getName() + "(){" + LN);
