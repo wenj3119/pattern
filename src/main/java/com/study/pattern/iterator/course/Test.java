@@ -19,7 +19,7 @@ public class Test {
 
         System.out.println("============课程列表============");
         printCourse(aggregate);
-
+        aggregate.remove(design);
 
         System.out.println("==============删除操作之后的课程列表================");
         printCourse(aggregate);
